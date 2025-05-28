@@ -1,14 +1,22 @@
 {
-  "version": "0.0.0",
+  "version": "1.0.0",
   "name": "strapi-plugin-populate-all",
   "description": "A lightweight plugin to recursively populate nested data in RESTful API requests",
   "keywords": [],
   "license": "MIT",
   "author": "Jan Fässler <strapi-plugin-populate-all@faessler.be>",
   "type": "commonjs",
+  "homepage": "https://github.com/faessler/strapi-plugin-populate-all#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faessler/strapi-plugin-populate-all.git"
+  },
+  "bugs": {
+    "url": "https://github.com/faessler/strapi-plugin-populate-all/issues"
+  },
   "strapi": {
     "kind": "plugin",
-    "name": "strapi-plugin-populate-all",
+    "name": "populate-all",
     "displayName": "Strapi Plugin Populate All",
     "description": "A lightweight plugin to recursively populate nested data in RESTful API requests"
   },

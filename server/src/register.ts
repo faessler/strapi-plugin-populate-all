@@ -1,7 +1,8 @@
 import type { Core } from '@strapi/strapi';
+import middlewares from './middlewares';
 
 const register = ({ strapi }: { strapi: Core.Strapi }) => {
-  // register phase
+  strapi.server.use(middlewares.populateAll);
 };
 
 export default register;
