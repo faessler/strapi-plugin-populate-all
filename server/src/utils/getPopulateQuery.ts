@@ -40,6 +40,11 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
 
       // relation
       if (attribute.type === 'relation') {
+        // skip private fields
+        if (attribute.private === true) {
+          continue;
+        }
+
         // allow list of relations to populate OR if true populate all relations
         const relations = strapi.plugin('populate-all').config<boolean | string[]>('relations');
         strapi.log.debug(`[populate-all] relations to populate ${JSON.stringify(relations)}`);
