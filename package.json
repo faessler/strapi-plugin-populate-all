@@ -1,0 +1,47 @@
+{
+  "version": "0.0.0",
+  "name": "strapi-plugin-populate-all",
+  "description": "A lightweight plugin to recursively populate nested data in RESTful API requests",
+  "keywords": [],
+  "license": "MIT",
+  "author": "Jan Fässler <strapi-plugin-populate-all@faessler.be>",
+  "type": "commonjs",
+  "strapi": {
+    "kind": "plugin",
+    "name": "strapi-plugin-populate-all",
+    "displayName": "Strapi Plugin Populate All",
+    "description": "A lightweight plugin to recursively populate nested data in RESTful API requests"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./strapi-server": {
+      "types": "./dist/server/src/index.d.ts",
+      "source": "./server/src/index.ts",
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.js",
+      "default": "./dist/server/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "strapi-plugin build",
+    "watch": "strapi-plugin watch",
+    "watch:link": "strapi-plugin watch:link",
+    "verify": "strapi-plugin verify",
+    "test:ts:back": "run -T tsc -p server/tsconfig.json"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@strapi/strapi": "^5.13.1",
+    "@strapi/sdk-plugin": "^5.3.2",
+    "prettier": "^3.5.3",
+    "@strapi/typescript-utils": "^5.13.1",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "@strapi/strapi": "^5.13.1",
+    "@strapi/sdk-plugin": "^5.3.2"
+  }
+}
