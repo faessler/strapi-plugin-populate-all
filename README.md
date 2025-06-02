@@ -8,6 +8,14 @@ A lightweight Strapi plugin that enables you to **recursively populate** all nes
 - Fine-tune which relations are populated using plugin configuration.
 - The generated populate queries are cached, so repeated REST requests for the same model are faster.
 
+## Installation
+
+All you need to do is install the plugin. Strapi should automatically detect and include it.
+
+```
+npm install strapi-plugin-populate-all
+```
+
 ## Usage
 
 Just add `?populate=all` to your REST API request, for example: `GET /api/articles?populate=all`
