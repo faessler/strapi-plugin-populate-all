@@ -10,6 +10,9 @@ const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
 
         const populateQuery = getPopulateQuery(event.model.uid as UID.Schema);
         if (populateQuery?.populate) {
+          strapi.log.debug(
+            `[populate-all] populate query for ${event.model.uid}: ${JSON.stringify(populateQuery.populate)}`
+          );
           event.params.populate = populateQuery.populate;
         }
       }
