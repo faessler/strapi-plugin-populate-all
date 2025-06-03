@@ -64,7 +64,7 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
 
       // media
       if (attribute.type === 'media') {
-        query.populate[fieldName] = { populate: true };
+        query.populate[fieldName] = true;
         continue;
       }
     }
