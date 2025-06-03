@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "strapi-plugin-populate-all",
   "description": "A lightweight plugin to recursively populate nested data in RESTful API requests",
   "keywords": [],
