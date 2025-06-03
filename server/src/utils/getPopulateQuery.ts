@@ -20,6 +20,7 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
 
       // skip localization field
       if (fieldName === 'localizations') {
+        query.populate[fieldName] = true;
         continue;
       }
 
