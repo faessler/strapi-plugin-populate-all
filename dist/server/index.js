@@ -41,6 +41,10 @@ const getPopulateQuery = (modelUid) => {
     const query = { populate: {} };
     const model = strapi.getModel(modelUid);
     for (const [fieldName, attribute] of Object.entries(model.attributes)) {
+      if (fieldName === "localizations") {
+        query.populate[fieldName] = true;
+        continue;
+      }
       if (attribute.type === "dynamiczone") {
         const components = Object.fromEntries(
           attribute.components.map((component) => [component, getPopulateQuery(component)])
@@ -65,10 +69,6 @@ const getPopulateQuery = (modelUid) => {
           query.populate[fieldName] = getPopulateQuery(attribute.target);
           continue;
         }
-      }
-      if (fieldName === "localizations") {
-        query.populate[fieldName] = true;
-        continue;
       }
       if (attribute.type === "media") {
         query.populate[fieldName] = true;

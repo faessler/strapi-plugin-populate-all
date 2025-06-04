@@ -16,6 +16,12 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
     const model = strapi.getModel(modelUid);
 
     for (const [fieldName, attribute] of Object.entries(model.attributes)) {
+      // localization (only populate first level to prevent infinite loop)
+      if (fieldName === 'localizations') {
+        query.populate[fieldName] = true;
+        continue;
+      }
+
       // dynamic zone
       if (attribute.type === 'dynamiczone') {
         const components = Object.fromEntries(
@@ -52,12 +58,6 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
           query.populate[fieldName] = getPopulateQuery(attribute.target);
           continue;
         }
-      }
-
-      // localization
-      if (fieldName === 'localizations') {
-        query.populate[fieldName] = true;
-        continue;
       }
 
       // media
