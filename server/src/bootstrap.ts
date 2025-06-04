@@ -10,7 +10,7 @@ const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
           strapi.log.debug(`[populate-all] recursively populate ${event.model.uid}`);
 
           const populateQuery = getPopulateQuery(event.model.uid as UID.Schema);
-          strapi.log.silly(
+          strapi.log.debug(
             `[populate-all] populate query for ${event.model.uid}: ${JSON.stringify(populateQuery.populate)}`
           );
           if (populateQuery?.populate) {
