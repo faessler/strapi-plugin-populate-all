@@ -99,7 +99,7 @@ public/uploads/*
 # Build
 ############################
 
-dist
+# dist
 build
 
 
