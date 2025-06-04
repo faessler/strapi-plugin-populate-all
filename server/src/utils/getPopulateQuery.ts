@@ -16,7 +16,7 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
     const model = strapi.getModel(modelUid);
 
     for (const [fieldName, attribute] of Object.entries(model.attributes)) {
-      // skip localization field
+      // localization (only populate first level to prevent infinite loop)Add commentMore actions
       if (fieldName === 'localizations') {
         query.populate[fieldName] = true;
         continue;
@@ -46,7 +46,6 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
 
         // allow list of relations to populate OR if true populate all relations
         const relations = strapi.plugin('populate-all').config<boolean | string[]>('relations');
-        strapi.log.silly(`[populate-all] relations to populate ${JSON.stringify(relations)}`);
 
         if (relations === true) {
           // @ts-expect-error target actually exists on attribute
