@@ -16,17 +16,17 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
     const model = strapi.getModel(modelUid);
 
     for (const [fieldName, attribute] of Object.entries(model.attributes)) {
-      // skip localization field
-      if (fieldName === 'localizations') {
-        continue;
-      }
-
       // dynamic zone
       if (attribute.type === 'dynamiczone') {
         const components = Object.fromEntries(
           attribute.components.map((component) => [component, getPopulateQuery(component)])
         );
         query.populate[fieldName] = { on: components };
+        continue;
+      }
+
+      // skip private fields
+      if (attribute.private === true) {
         continue;
       }
 
@@ -38,14 +38,8 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
 
       // relation
       if (attribute.type === 'relation') {
-        // skip private fields
-        if (attribute.private === true) {
-          continue;
-        }
-
         // allow list of relations to populate OR if true populate all relations
         const relations = strapi.plugin('populate-all').config<boolean | string[]>('relations');
-        strapi.log.debug(`[populate-all] relations to populate ${JSON.stringify(relations)}`);
 
         if (relations === true) {
           // @ts-expect-error target actually exists on attribute
@@ -58,6 +52,12 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
           query.populate[fieldName] = getPopulateQuery(attribute.target);
           continue;
         }
+      }
+
+      // localization
+      if (fieldName === 'localizations') {
+        query.populate[fieldName] = true;
+        continue;
       }
 
       // media
