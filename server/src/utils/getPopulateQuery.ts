@@ -15,8 +15,8 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
     const query = { populate: {} };
     const model = strapi.getModel(modelUid);
 
-    for (const [fieldName, attribute] of Object.entries(model.attributes)) {
-      // localization (only populate first level to prevent infinite loop)Add commentMore actions
+    for (const [fieldName, attribute] of Object.entries(model.attributes || {})) {
+      // localization (only populate first level to prevent infinite loop)
       if (fieldName === 'localizations') {
         query.populate[fieldName] = true;
         continue;
