@@ -3,9 +3,7 @@ export default {
     relations: true,
   },
   validator(config: Record<string, unknown>) {
-    for (const key in config) {
-      const value = config[key];
-
+    for (const [key, value] of Object.entries(config)) {
       switch (key) {
         case 'relations': {
           const isBoolean = typeof value === 'boolean';

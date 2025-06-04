@@ -15,9 +15,7 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
     const query = { populate: {} };
     const model = strapi.getModel(modelUid);
 
-    for (const fieldName in model.attributes) {
-      const attribute = model.attributes[fieldName];
-
+    for (const [fieldName, attribute] of Object.entries(model.attributes)) {
       // skip localization field
       if (fieldName === 'localizations') {
         query.populate[fieldName] = true;
