@@ -88,14 +88,18 @@ const getPopulateQuery = (modelUid) => {
 };
 const bootstrap = ({ strapi: strapi2 }) => {
   strapi2.db.lifecycles.subscribe((event) => {
-    if (event.params?.recursive === "true") {
-      if (event.action === "beforeFindMany" || event.action === "beforeFindOne") {
-        strapi2.log.debug(`[populate-all] recursively populate ${event.model.uid}`);
-        const populateQuery = getPopulateQuery(event.model.uid);
-        if (populateQuery?.populate) {
-          event.params.populate = populateQuery.populate;
+    try {
+      if (event.params?.recursive === "true") {
+        if (event.action === "beforeFindMany" || event.action === "beforeFindOne") {
+          strapi2.log.debug(`[populate-all] recursively populate ${event.model.uid}`);
+          const populateQuery = getPopulateQuery(event.model.uid);
+          if (populateQuery?.populate) {
+            event.params.populate = populateQuery.populate;
+          }
         }
       }
+    } catch (error) {
+      strapi2.log.error(`[populate-all] failed to apply populate db query: ${error}`);
     }
   });
 };
