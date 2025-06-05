@@ -15,8 +15,8 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
     const query = { populate: {} };
     const model = strapi.getModel(modelUid);
 
-    for (const [fieldName, attribute] of Object.entries(model.attributes)) {
-      // localization (only populate first level to prevent infinite loop)Add commentMore actions
+    for (const [fieldName, attribute] of Object.entries(model.attributes || {})) {
+      // localization (only populate first level to prevent infinite loop)
       if (fieldName === 'localizations') {
         query.populate[fieldName] = true;
         continue;
@@ -77,7 +77,9 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
     queryCache[modelUid] = query;
     return query;
   } catch (error) {
-    strapi.log.error(`[populate-all] getPopulateQuery(${modelUid}) failed: ${error}`);
+    // TODO: temporary console.error instead of strapi.log.error until https://github.com/strapi/strapi/pull/23657 is resolved
+    // strapi.log.error(`[populate-all] getPopulateQuery(${modelUid}) failed: ${error}`);
+    console.error(`[populate-all] getPopulateQuery(${modelUid}) failed: ${error}`);
     return undefined;
   }
 };
