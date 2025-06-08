@@ -38,15 +38,18 @@
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
-    "test:ts:back": "run -T tsc -p server/tsconfig.json"
+    "test:ts:back": "run -T tsc -p server/tsconfig.json",
+    "test:watch": "vitest --watch",
+    "test:cover": "vitest --coverage"
   },
   "dependencies": {},
   "devDependencies": {
     "@strapi/strapi": "^5",
     "@strapi/sdk-plugin": "^5",
-    "prettier": "^3.5.3",
     "@strapi/typescript-utils": "^5",
-    "typescript": "^5.8.3"
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "vitest": "3.2.2"
   },
   "peerDependencies": {
     "@strapi/strapi": "^5",
