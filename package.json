@@ -1,5 +1,5 @@
 {
-  "version": "1.1.2",
+  "version": "1.2.0",
   "name": "strapi-plugin-populate-all",
   "description": "A lightweight plugin to recursively populate nested data in RESTful API requests",
   "keywords": [],
@@ -40,19 +40,21 @@
     "verify": "strapi-plugin verify",
     "test:ts:back": "run -T tsc -p server/tsconfig.json",
     "test:watch": "vitest --watch",
-    "test:cover": "vitest --coverage"
+    "test:cover": "vitest --coverage",
+    "release": "semantic-release"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@strapi/strapi": "^5",
     "@strapi/sdk-plugin": "^5",
+    "@strapi/strapi": "^5",
     "@strapi/typescript-utils": "^5",
+    "@vitest/coverage-v8": "^3.2.2",
     "prettier": "^3.5.3",
+    "semantic-release": "^24.2.5",
     "typescript": "^5.8.3",
-    "vitest": "3.2.2"
+    "vitest": "^3.2.2"
   },
   "peerDependencies": {
-    "@strapi/strapi": "^5",
-    "@strapi/sdk-plugin": "^5"
+    "@strapi/sdk-plugin": "^5",
+    "@strapi/strapi": "^5"
   }
 }
