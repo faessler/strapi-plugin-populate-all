@@ -13,7 +13,9 @@
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
-    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@strapi/plugin-cloud": "5.16.0",
@@ -25,12 +27,20 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
+    "strapi-plugin-populate-all": "file:..",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "7.28.0",
+    "@babel/preset-typescript": "7.27.1",
+    "@jest/globals": "30.0.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/supertest": "6.0.3",
+    "jest": "30.0.4",
+    "supertest": "7.1.1",
+    "sqlite3": "5.1.7",
     "typescript": "^5"
   },
   "engines": {
