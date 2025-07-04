@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  workflow_call:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+env:
+  NODE_ENV: 'test'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./sandbox
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org/'
+          cache: 'npm'
+
+      - name: dotenv
+        run: echo "${{ secrets.ENV_FILE }}" >> .env
+
+      - name: Install
+        run: npm ci
+
+      - name: Seed
+        run: npm run seed:example
+
+      - name: Test
+        run: npm run test:cover
