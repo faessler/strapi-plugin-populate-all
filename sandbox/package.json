@@ -1,0 +1,56 @@
+{
+  "name": "sandbox",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Strapi application",
+  "scripts": {
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
+    "develop": "strapi develop",
+    "seed:example": "node ./scripts/seed.js",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
+    "test": "jest",
+    "test:cover": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "5.16.0",
+    "@strapi/plugin-users-permissions": "5.16.0",
+    "@strapi/strapi": "5.16.0",
+    "better-sqlite3": "11.3.0",
+    "fs-extra": "^10.0.0",
+    "mime-types": "^2.1.27",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "strapi-plugin-populate-all": "file:..",
+    "styled-components": "^6.0.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "7.28.0",
+    "@babel/preset-typescript": "7.27.1",
+    "@jest/globals": "30.0.4",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/supertest": "6.0.3",
+    "jest": "30.0.4",
+    "supertest": "7.1.1",
+    "sqlite3": "5.1.7",
+    "ts-node": "10.9.2",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "703d3724-9e07-46f1-9af0-29b0259c63d7",
+    "installId": "ed7071c837601bdd06d558cfcc836f534d218dbe52141291449c9961e3490fe6"
+  }
+}
