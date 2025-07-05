@@ -40,7 +40,6 @@
     "verify": "strapi-plugin verify",
     "check": "biome check",
     "check:fix": "biome check --write",
-    "check:ci": "biome ci --log-level=error --diagnostic-level=error",
     "test:ts:back": "run -T tsc -p server/tsconfig.json",
     "release": "semantic-release"
   },
