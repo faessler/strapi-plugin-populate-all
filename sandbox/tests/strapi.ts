@@ -1,6 +1,6 @@
-import Strapi from '@strapi/strapi';
-import supertest from 'supertest';
-import type TestAgent from 'supertest/lib/agent';
+import Strapi from "@strapi/strapi";
+import supertest from "supertest";
+import type TestAgent from "supertest/lib/agent";
 
 export let strapiRequest: TestAgent;
 

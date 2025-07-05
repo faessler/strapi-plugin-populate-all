@@ -1,3 +1,3 @@
 export default {
-  setupFilesAfterEnv: ['./jest.setup.global.ts'],
+  setupFilesAfterEnv: ["./jest.setup.global.ts"],
 };

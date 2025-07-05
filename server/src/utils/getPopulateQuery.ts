@@ -1,9 +1,11 @@
-import type { UID } from '@strapi/strapi';
+import type { UID } from "@strapi/strapi";
 
 // memory cache to only execute query generation ones per modelUid
 const queryCache: Partial<Record<UID.Schema, any>> = {};
 
-export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | true } | undefined => {
+export const getPopulateQuery = (
+  modelUid: UID.Schema
+): { populate: object | true } | undefined => {
   try {
     // return cached query
     if (queryCache[modelUid]) {
@@ -15,37 +17,44 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
     const query = { populate: {} };
     const model = strapi.getModel(modelUid);
 
-    for (const [fieldName, attribute] of Object.entries(model.attributes || {})) {
+    for (const [fieldName, attribute] of Object.entries(
+      model.attributes || {}
+    )) {
       // localization (only populate first level to prevent infinite loop)
-      if (fieldName === 'localizations') {
+      if (fieldName === "localizations") {
         query.populate[fieldName] = true;
         continue;
       }
 
       // dynamic zone
-      if (attribute.type === 'dynamiczone') {
+      if (attribute.type === "dynamiczone") {
         const components = Object.fromEntries(
-          attribute.components.map((component) => [component, getPopulateQuery(component)])
+          attribute.components.map((component) => [
+            component,
+            getPopulateQuery(component),
+          ])
         );
         query.populate[fieldName] = { on: components };
         continue;
       }
 
       // component
-      if (attribute.type === 'component') {
+      if (attribute.type === "component") {
         query.populate[fieldName] = getPopulateQuery(attribute.component);
         continue;
       }
 
       // relation
-      if (attribute.type === 'relation') {
+      if (attribute.type === "relation") {
         // skip private fields
         if (attribute.private === true) {
           continue;
         }
 
         // allow list of relations to populate OR if true populate all relations
-        const relations = strapi.plugin('populate-all').config<boolean | string[]>('relations');
+        const relations = strapi
+          .plugin("populate-all")
+          .config<boolean | string[]>("relations");
 
         if (relations === true) {
           // @ts-expect-error target actually exists on attribute
@@ -61,9 +70,8 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
       }
 
       // media
-      if (attribute.type === 'media') {
+      if (attribute.type === "media") {
         query.populate[fieldName] = true;
-        continue;
       }
     }
 
@@ -79,7 +87,9 @@ export const getPopulateQuery = (modelUid: UID.Schema): { populate: object | tru
   } catch (error) {
     // TODO: temporary console.error instead of strapi.log.error until https://github.com/strapi/strapi/pull/23657 is resolved
     // strapi.log.error(`[populate-all] getPopulateQuery(${modelUid}) failed: ${error}`);
-    console.error(`[populate-all] getPopulateQuery(${modelUid}) failed: ${error}`);
+    console.error(
+      `[populate-all] getPopulateQuery(${modelUid}) failed: ${error}`
+    );
     return undefined;
   }
 };
