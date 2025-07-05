@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeEach, vi } from 'vitest';
-import { getPopulateQuery } from '../getPopulateQuery';
-import type { UID } from '@strapi/strapi';
+import type { UID } from "@strapi/strapi";
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import { getPopulateQuery } from "../getPopulateQuery";
 
-describe('getPopulateQuery', () => {
+describe("getPopulateQuery", () => {
   const mockStrapi = {
     log: { debug: vi.fn() },
     getModel: vi.fn(),
@@ -17,39 +17,39 @@ describe('getPopulateQuery', () => {
     mockStrapi.plugin.mockClear();
   });
 
-  test('populates media attribute', () => {
+  test("populates media attribute", () => {
     mockStrapi.getModel.mockReturnValue({
       attributes: {
-        title: { type: 'string' },
-        media: { type: 'media' },
+        title: { type: "string" },
+        media: { type: "media" },
       },
     });
-    const result = getPopulateQuery('media-model' as UID.Schema);
+    const result = getPopulateQuery("media-model" as UID.Schema);
     expect(result).toEqual({
       populate: { media: true },
     });
   });
 
-  test('handles dynamiczone and component', () => {
+  test("handles dynamiczone and component", () => {
     mockStrapi.getModel.mockImplementation((uid) => {
       switch (uid) {
-        case 'dynamiczone-model':
+        case "dynamiczone-model":
           return {
             attributes: {
-              dz: { type: 'dynamiczone', components: ['comp1'] },
+              dz: { type: "dynamiczone", components: ["comp1"] },
             },
           };
-        case 'comp1':
+        case "comp1":
           return {
             attributes: {
-              foo: { type: 'string' },
+              foo: { type: "string" },
             },
           };
         default:
           return { attributes: {} };
       }
     });
-    const result = getPopulateQuery('dynamiczone-model' as UID.Schema);
+    const result = getPopulateQuery("dynamiczone-model" as UID.Schema);
     expect(result).toEqual({
       populate: {
         dz: { on: { comp1: { populate: true } } },
@@ -57,25 +57,25 @@ describe('getPopulateQuery', () => {
     });
   });
 
-  test('handles relations with allowlist', () => {
+  test("handles relations with allowlist", () => {
     mockStrapi.plugin.mockReturnValue({
-      config: vi.fn().mockReturnValue(['target-model']),
+      config: vi.fn().mockReturnValue(["target-model"]),
     });
     mockStrapi.getModel.mockImplementation((uid) => {
       switch (uid) {
-        case 'rel-model':
+        case "rel-model":
           return {
             attributes: {
-              rel: { type: 'relation', target: 'target-model' },
+              rel: { type: "relation", target: "target-model" },
             },
           };
-        case 'target-model':
+        case "target-model":
           return { attributes: {} };
         default:
           return { attributes: {} };
       }
     });
-    const result = getPopulateQuery('rel-model' as UID.Schema);
+    const result = getPopulateQuery("rel-model" as UID.Schema);
     expect(result).toEqual({
       populate: {
         rel: { populate: true },
@@ -83,11 +83,11 @@ describe('getPopulateQuery', () => {
     });
   });
 
-  test('returns undefined on error', () => {
+  test("returns undefined on error", () => {
     mockStrapi.getModel.mockImplementation(() => {
-      throw new Error('fail');
+      throw new Error("fail");
     });
-    const result = getPopulateQuery('bad-model' as UID.Schema);
+    const result = getPopulateQuery("bad-model" as UID.Schema);
     expect(result).toBeUndefined();
   });
 });

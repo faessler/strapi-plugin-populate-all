@@ -6,9 +6,9 @@ export default {
    * The bootstrap script later picks up `?recursive=true` to apply the desired populate logic.
    */
   populateAll: async (ctx, next) => {
-    if (ctx.query.populate === 'all') {
+    if (ctx.query.populate === "all") {
       ctx.query.populate = undefined;
-      ctx.query.recursive = 'true';
+      ctx.query.recursive = "true";
     }
     await next();
   },
