@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",
+  "strapi": {
+    "uuid": "703d3724-9e07-46f1-9af0-29b0259c63d7",
+    "installId": "ed7071c837601bdd06d558cfcc836f534d218dbe52141291449c9961e3490fe6"
+  },
   "scripts": {
     "build": "strapi build",
     "console": "strapi console",
@@ -14,9 +18,12 @@
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
     "upgrade:dry": "npx @strapi/upgrade latest --dry",
-    "test": "jest",
     "test:cover": "jest --coverage",
     "test:watch": "jest --watch"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
   },
   "dependencies": {
     "@strapi/plugin-cloud": "5.16.0",
@@ -44,13 +51,5 @@
     "sqlite3": "5.1.7",
     "ts-node": "10.9.2",
     "typescript": "^5"
-  },
-  "engines": {
-    "node": ">=18.0.0 <=22.x.x",
-    "npm": ">=6.0.0"
-  },
-  "strapi": {
-    "uuid": "703d3724-9e07-46f1-9af0-29b0259c63d7",
-    "installId": "ed7071c837601bdd06d558cfcc836f534d218dbe52141291449c9961e3490fe6"
   }
 }
