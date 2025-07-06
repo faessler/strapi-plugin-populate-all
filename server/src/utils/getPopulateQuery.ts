@@ -4,13 +4,24 @@ import type { UID } from "@strapi/strapi";
 const queryCache: Partial<Record<UID.Schema, any>> = {};
 
 export const getPopulateQuery = (
-  modelUid: UID.Schema
+  modelUid: UID.Schema,
+  parentsModelUids: UID.Schema[] = []
 ): { populate: object | true } | undefined => {
   try {
     // return cached query
     if (queryCache[modelUid]) {
       strapi.log.debug(`[populate-all] query cache hit: ${modelUid}`);
       return queryCache[modelUid];
+    }
+
+    // prevent infinite loop
+    if (parentsModelUids.includes(modelUid)) {
+      strapi.log.debug(
+        `[populate-all] loop detected skipping population: ${modelUid}`
+      );
+      return { populate: {} };
+    } else {
+      parentsModelUids.push(modelUid);
     }
 
     // build query
@@ -31,7 +42,7 @@ export const getPopulateQuery = (
         const components = Object.fromEntries(
           attribute.components.map((component) => [
             component,
-            getPopulateQuery(component),
+            getPopulateQuery(component, parentsModelUids),
           ])
         );
         query.populate[fieldName] = { on: components };
@@ -40,7 +51,10 @@ export const getPopulateQuery = (
 
       // component
       if (attribute.type === "component") {
-        query.populate[fieldName] = getPopulateQuery(attribute.component);
+        query.populate[fieldName] = getPopulateQuery(
+          attribute.component,
+          parentsModelUids
+        );
         continue;
       }
 
@@ -57,14 +71,20 @@ export const getPopulateQuery = (
           .config<boolean | string[]>("relations");
 
         if (relations === true) {
-          // @ts-expect-error target actually exists on attribute
-          query.populate[fieldName] = getPopulateQuery(attribute.target);
+          query.populate[fieldName] = getPopulateQuery(
+            // @ts-expect-error target actually exists on attribute
+            attribute.target,
+            parentsModelUids
+          );
           continue;
         }
         // @ts-expect-error target actually exists on attribute
         if (Array.isArray(relations) && relations.includes(attribute.target)) {
-          // @ts-expect-error target actually exists on attribute
-          query.populate[fieldName] = getPopulateQuery(attribute.target);
+          query.populate[fieldName] = getPopulateQuery(
+            // @ts-expect-error target actually exists on attribute
+            attribute.target,
+            parentsModelUids
+          );
           continue;
         }
       }
