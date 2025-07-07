@@ -29,6 +29,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
           cache: 'npm'
 
+      - name: Prepare plugin
+        run: npm ci && npm run build
+        working-directory: ./
+
       - name: dotenv
         run: echo "${{ secrets.ENV_FILE }}" >> .env
 
