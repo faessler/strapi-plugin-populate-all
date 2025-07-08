@@ -4,12 +4,11 @@ import { getPopulateQuery } from "./utils/getPopulateQuery";
 const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
   strapi.db.lifecycles.subscribe((event) => {
     try {
-      // @ts-expect-error `Property 'recursive' does not exist on type 'Params'.ts(2339)`
-      if (event.params?.recursive === "true") {
-        if (
-          event.action === "beforeFindMany" ||
-          event.action === "beforeFindOne"
-        ) {
+      if (
+        event.action === "beforeFindMany" ||
+        event.action === "beforeFindOne"
+      ) {
+        if (event.params?.recursive) {
           strapi.log.debug(
             `[populate-all] recursively populate ${event.model.uid}`
           );

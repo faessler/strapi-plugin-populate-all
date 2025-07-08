@@ -49,3 +49,4 @@ module.exports = {
 - The plugin provides a global middleware that intercepts requests with `?populate=all` and rewrites the query to trigger recursive population.
 - In the background, it builds a standard Strapi populate query as described in the [Strapi documentation](https://docs.strapi.io/cms/api/rest/populate-select).
 - You can control which relations are included using the relations config option.
+- Inside the document API, you can set `populate: '*'` and `recursive: true` to make it work
