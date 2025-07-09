@@ -8,7 +8,7 @@ export default {
   populateAll: async (ctx, next) => {
     if (ctx.query.populate === "all") {
       ctx.query.populate = undefined;
-      ctx.query.recursive = "true";
+      ctx.query.populateAll = true;
     }
     await next();
   },
