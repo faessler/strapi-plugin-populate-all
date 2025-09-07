@@ -1,8 +1,6 @@
 # Strapi Plugin Populate All
 
-[![Static Badge](https://img.shields.io/badge/strapi-market-4945FF?logo=strapi)](https://market.strapi.io/plugins/strapi-plugin-populate-all)
- [![NPM Version](https://img.shields.io/npm/v/strapi-plugin-populate-all?logo=npm&color=%23cb3837)](https://www.npmjs.com/package/strapi-plugin-populate-all)
- [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/faessler/strapi-plugin-populate-all/test.yml?branch=main&logo=github&label=tests)](https://github.com/faessler/strapi-plugin-populate-all/actions/workflows/test.yml)
+[![Static Badge](https://img.shields.io/badge/strapi-market-4945FF?logo=strapi)](https://market.strapi.io/plugins/strapi-plugin-populate-all) [![NPM Version](https://img.shields.io/npm/v/strapi-plugin-populate-all?logo=npm&color=%23cb3837)](https://www.npmjs.com/package/strapi-plugin-populate-all) [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/faessler/strapi-plugin-populate-all/test.yml?branch=main&logo=github&label=tests)](https://github.com/faessler/strapi-plugin-populate-all/actions/workflows/test.yml)
 
 A lightweight Strapi plugin that enables you to **recursively populate** all nested components, dynamic zones and relations in your REST API responses using a simple query parameter: `?populate=all`.
 
@@ -32,7 +30,7 @@ Add the following to your Strapi project's `config/plugins.js` (or `config/plugi
 
 ```js
 module.exports = {
-  'populate-all': {
+  "populate-all": {
     enabled: true,
     config: {
       // Populate all relations recursively (default)
@@ -42,7 +40,7 @@ module.exports = {
       relations: false,
 
       // OR: Only populate specific collection types by UID
-      relations: ['api::article.article', 'api::category.category'],
+      relations: ["api::article.article", "api::category.category"],
     },
   },
 };

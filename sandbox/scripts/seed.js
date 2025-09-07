@@ -51,7 +51,7 @@ async function setPublicPermissions(newPermissions) {
 
   // Create the new permissions and link them to the public role
   const allPermissionsToCreate = [];
-  Object.keys(newPermissions).map((controller) => {
+  Object.keys(newPermissions).forEach((controller) => {
     const actions = newPermissions[controller];
     const permissionsToCreate = actions.map((action) => {
       return strapi.query("plugin::users-permissions.permission").create({
