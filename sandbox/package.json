@@ -26,12 +26,12 @@
     "npm": ">=6.0.0"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "5.16.0",
-    "@strapi/plugin-users-permissions": "5.16.0",
-    "@strapi/strapi": "5.16.0",
-    "better-sqlite3": "11.3.0",
-    "fs-extra": "^10.0.0",
-    "mime-types": "^2.1.27",
+    "@strapi/plugin-cloud": "^5.25.0",
+    "@strapi/plugin-users-permissions": "^5.25.0",
+    "@strapi/strapi": "^5.25.0",
+    "better-sqlite3": "^11.10.0",
+    "fs-extra": "^10.1.0",
+    "mime-types": "^2.1.35",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
@@ -39,17 +39,17 @@
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "7.28.0",
-    "@babel/preset-typescript": "7.27.1",
-    "@jest/globals": "30.0.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-typescript": "^7.27.1",
+    "@jest/globals": "^30.2.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@types/supertest": "6.0.3",
-    "jest": "30.0.4",
-    "supertest": "7.1.1",
-    "sqlite3": "5.1.7",
-    "ts-node": "10.9.2",
-    "typescript": "^5"
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4",
+    "sqlite3": "^5.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

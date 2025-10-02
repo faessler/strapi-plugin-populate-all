@@ -44,12 +44,12 @@
     "release": "semantic-release"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.6",
-    "@strapi/sdk-plugin": "^5",
-    "@strapi/strapi": "^5",
-    "@strapi/typescript-utils": "^5",
-    "semantic-release": "^24.2.5",
-    "typescript": "^5.8.3"
+    "@biomejs/biome": "^2.2.4",
+    "@strapi/sdk-plugin": "^5.3.2",
+    "@strapi/strapi": "^5.25.0",
+    "@strapi/typescript-utils": "^5.25.0",
+    "semantic-release": "^24.2.9",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "@strapi/sdk-plugin": "^5",
