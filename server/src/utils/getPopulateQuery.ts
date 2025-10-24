@@ -11,7 +11,7 @@ export const getPopulateQuery = (
     // return cached query
     if (queryCache[modelUid]) {
       strapi.log.debug(`[populate-all] query cache hit: ${modelUid}`);
-      return queryCache[modelUid];
+      return structuredClone(queryCache[modelUid]); // return a clone to avoid mutating the original object
     }
 
     // prevent infinite loop
@@ -103,7 +103,7 @@ export const getPopulateQuery = (
     // cache query
     strapi.log.debug(`[populate-all] new query cached: ${modelUid}`);
     queryCache[modelUid] = query;
-    return query;
+    return structuredClone(query); // return a clone to avoid mutating the original object
   } catch (error) {
     // TODO: temporary console.error instead of strapi.log.error until https://github.com/strapi/strapi/pull/23657 is resolved
     // strapi.log.error(`[populate-all] getPopulateQuery(${modelUid}) failed: ${error}`);
