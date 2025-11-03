@@ -8,7 +8,7 @@ const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
         event.action === "beforeFindMany" ||
         event.action === "beforeFindOne"
       ) {
-        // @ts-ignore it's a new key
+        // @ts-expect-error it's a new key
         if (event.params?.populateAll) {
           strapi.log.debug(
             `[populate-all] recursively populate ${event.model.uid}`

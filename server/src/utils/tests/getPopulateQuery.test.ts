@@ -10,7 +10,7 @@ describe("getPopulateQuery", () => {
   };
 
   beforeEach(() => {
-    // @ts-ignore
+    // @ts-expect-error enough to mock
     global.strapi = mockStrapi;
     mockStrapi.log.debug.mockClear();
     mockStrapi.getModel.mockClear();
