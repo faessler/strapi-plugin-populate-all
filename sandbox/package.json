@@ -22,7 +22,7 @@
     "test:watch": "jest --watch"
   },
   "engines": {
-    "node": ">=18.0.0 <=22.x.x",
+    "node": ">=22.0.0 <=24.x.x",
     "npm": ">=6.0.0"
   },
   "dependencies": {
@@ -42,7 +42,7 @@
     "@babel/preset-env": "7.28.0",
     "@babel/preset-typescript": "7.27.1",
     "@jest/globals": "30.0.4",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/supertest": "6.0.3",
