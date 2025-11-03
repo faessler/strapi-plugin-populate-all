@@ -9,8 +9,12 @@ export const getPopulateQuery = (
   parentsModelUids: UID.Schema[] = []
 ): { populate: object | true } | undefined => {
   try {
+    // user config to enable/disable cache
+    const useCache =
+      strapi.plugin("populate-all").config<boolean>("cache") ?? true;
+
     // return cached query
-    if (queryCache[modelUid]) {
+    if (useCache && queryCache[modelUid]) {
       strapi.log.debug(`[populate-all] query cache hit: ${modelUid}`);
       return structuredClone(queryCache[modelUid]); // return a clone to avoid mutating the original object
     }
@@ -102,8 +106,10 @@ export const getPopulateQuery = (
     }
 
     // cache query
-    strapi.log.debug(`[populate-all] new query cached: ${modelUid}`);
-    queryCache[modelUid] = query;
+    if (useCache) {
+      strapi.log.debug(`[populate-all] new query cached: ${modelUid}`);
+      queryCache[modelUid] = query;
+    }
     return structuredClone(query); // return a clone to avoid mutating the original object
   } catch (error) {
     // TODO: temporary console.error instead of strapi.log.error until https://github.com/strapi/strapi/pull/23657 is resolved

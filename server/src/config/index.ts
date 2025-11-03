@@ -5,6 +5,16 @@ export default {
   validator(config: Record<string, unknown> = {}) {
     for (const [key, value] of Object.entries(config)) {
       switch (key) {
+        case "cache": {
+          const isBoolean = typeof value === "boolean";
+          if (!isBoolean) {
+            throw new Error(
+              `[populate-all] config "${key}" of type ${typeof value} is not valid. Supported is boolean.`
+            );
+          }
+          break;
+        }
+
         case "relations": {
           const isBoolean = typeof value === "boolean";
           const isArrayOfStrings =

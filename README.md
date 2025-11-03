@@ -25,22 +25,22 @@ This will return the article with all nested components, dynamic zones and relat
 
 ## Configuration
 
-You can configure which relations should be populated by default.  
-Add the following to your Strapi project's `config/plugins.js` (or `config/plugins.ts`):
+The following configuration options can be added to your Strapi project's `config/plugins.js` or `config/plugins.ts` file.
+
+| Option      | Description                                                                            | Values                                                                                                                                                                                                |
+| ----------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `relations` | Controls which relations are populated when querying.                                  | - `true`: Populate all relations recursively (default)<br>- `false`: Do not populate any relations<br>- `string[]`: Populate only specific collection types by UID (e.g., `["api::article.article"]`) |
+| `cache`     | Enables or disables the plugin’s in-memory cache for faster populate query generation. | - `true` (default)<br>- `false`                                                                                                                                                                       |
+
+Example usage:
 
 ```js
 module.exports = {
   "populate-all": {
     enabled: true,
     config: {
-      // Populate all relations recursively (default)
-      relations: true,
-
-      // OR: Do not populate any relations
-      relations: false,
-
-      // OR: Only populate specific collection types by UID
-      relations: ["api::article.article", "api::category.category"],
+      cache: true,
+      realtions: true,
     },
   },
 };
