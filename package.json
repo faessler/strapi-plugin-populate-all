@@ -41,6 +41,8 @@
     "check": "biome check",
     "check:fix": "biome check --write",
     "test:ts:back": "run -T tsc -p server/tsconfig.json",
+    "test:cover": "vitest run ./server --coverage",
+    "test:watch": "vitest watch ./server",
     "release": "semantic-release"
   },
   "devDependencies": {
@@ -48,6 +50,7 @@
     "@strapi/sdk-plugin": "^5",
     "@strapi/strapi": "^5",
     "@strapi/typescript-utils": "^5",
+    "@vitest/coverage-v8": "^4.0.6",
     "semantic-release": "^25.0.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.6"
