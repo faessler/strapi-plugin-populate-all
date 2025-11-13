@@ -2,7 +2,7 @@ import type { UID } from "@strapi/strapi";
 
 // memory cache to only execute query generation ones per modelUid
 // biome-ignore lint/suspicious/noExplicitAny: any object can be cached
-const queryCache: Partial<Record<UID.Schema, any>> = {};
+export const queryCache: Partial<Record<UID.Schema, any>> = {};
 
 export const getPopulateQuery = (
   modelUid: UID.Schema,

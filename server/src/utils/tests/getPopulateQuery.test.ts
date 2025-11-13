@@ -1,12 +1,12 @@
 import type { UID } from "@strapi/strapi";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { getPopulateQuery } from "../getPopulateQuery";
+import { getPopulateQuery, queryCache } from "../getPopulateQuery";
 
 describe("getPopulateQuery", () => {
   const mockStrapi = {
     log: { debug: vi.fn() },
     getModel: vi.fn(),
-    plugin: vi.fn(),
+    plugin: vi.fn().mockReturnValue({ config: vi.fn() }),
   };
 
   beforeEach(() => {
@@ -15,6 +15,11 @@ describe("getPopulateQuery", () => {
     mockStrapi.log.debug.mockClear();
     mockStrapi.getModel.mockClear();
     mockStrapi.plugin.mockClear();
+
+    // reset cache
+    Object.keys(queryCache).forEach((key) => {
+      delete queryCache[key];
+    });
   });
 
   test("populates media attribute", () => {
@@ -24,7 +29,9 @@ describe("getPopulateQuery", () => {
         media: { type: "media" },
       },
     });
+
     const result = getPopulateQuery("media-model" as UID.Schema);
+
     expect(result).toEqual({
       populate: { media: true },
     });
@@ -49,7 +56,9 @@ describe("getPopulateQuery", () => {
           return { attributes: {} };
       }
     });
+
     const result = getPopulateQuery("dynamiczone-model" as UID.Schema);
+
     expect(result).toEqual({
       populate: {
         dz: { on: { comp1: { populate: true } } },
@@ -75,7 +84,9 @@ describe("getPopulateQuery", () => {
           return { attributes: {} };
       }
     });
+
     const result = getPopulateQuery("rel-model" as UID.Schema);
+
     expect(result).toEqual({
       populate: {
         rel: { populate: true },
@@ -87,7 +98,9 @@ describe("getPopulateQuery", () => {
     mockStrapi.getModel.mockImplementation(() => {
       throw new Error("fail");
     });
+
     const result = getPopulateQuery("bad-model" as UID.Schema);
+
     expect(result).toBeUndefined();
   });
 });
