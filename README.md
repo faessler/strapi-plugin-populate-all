@@ -40,7 +40,7 @@ module.exports = {
     enabled: true,
     config: {
       cache: true,
-      realtions: true,
+      relations: true,
     },
   },
 };
