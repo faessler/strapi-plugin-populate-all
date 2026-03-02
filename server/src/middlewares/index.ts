@@ -1,3 +1,5 @@
+import type { Context, Next } from "koa";
+
 export default {
   /**
    * This is a global middleware to add support for the custom query param `?populate=all`.
@@ -5,7 +7,7 @@ export default {
    * If `?populate=all` is detected, we omit the value and set `?populateAll=true` instead.
    * The bootstrap script later picks up `?populateAll=true` to apply the desired populate logic.
    */
-  populateAll: async (ctx, next) => {
+  populateAll: async (ctx: Context, next: Next) => {
     if (ctx.query.populate === "all") {
       ctx.query.populate = undefined;
       ctx.query.populateAll = true;
