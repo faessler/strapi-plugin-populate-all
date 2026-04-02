@@ -1,4 +1,5 @@
 import type { Context, Next } from "koa";
+import { PLUGIN_QUERY_DOCUMENT_TAG } from "../config";
 
 export default {
   /**
@@ -10,7 +11,7 @@ export default {
   populateAll: async (ctx: Context, next: Next) => {
     if (ctx.query.populate === "all") {
       ctx.query.populate = undefined;
-      ctx.query.populateAll = true;
+      ctx.query._q = [ctx.query._q || "", PLUGIN_QUERY_DOCUMENT_TAG].join("");
     }
     await next();
   },

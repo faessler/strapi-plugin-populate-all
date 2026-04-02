@@ -1,3 +1,5 @@
+export const PLUGIN_QUERY_DOCUMENT_TAG = "populate-all";
+
 export default {
   default: {
     relations: true,
