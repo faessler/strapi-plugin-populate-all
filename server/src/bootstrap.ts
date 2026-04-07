@@ -1,6 +1,6 @@
 import type { Core, UID } from "@strapi/strapi";
 import { PLUGIN_QUERY_DOCUMENT_TAG } from "./config";
-import { getPopulateQuery, queryCache } from "./utils/getPopulateQuery";
+import { getPopulateQuery } from "./utils/getPopulateQuery";
 
 const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
   strapi.db.lifecycles.subscribe((event) => {
