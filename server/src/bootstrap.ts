@@ -1,4 +1,5 @@
 import type { Core, UID } from "@strapi/strapi";
+import { PLUGIN_QUERY_DOCUMENT_TAG } from "./config";
 import { getPopulateQuery } from "./utils/getPopulateQuery";
 
 const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
@@ -8,7 +9,11 @@ const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
         event.action === "beforeFindMany" ||
         event.action === "beforeFindOne"
       ) {
-        if (strapi.requestContext.get()?.query?.populateAll) {
+        // There is a whitelist of keys we can use to detect our
+        // filter from the params
+        // https://github.com/strapi/strapi/blob/develop/packages/core/utils/src/content-api-constants.ts
+        // We cheat.
+        if (event.params._q?.includes(PLUGIN_QUERY_DOCUMENT_TAG)) {
           strapi.log.debug(
             `[populate-all] recursively populate ${event.model.uid}`
           );
@@ -16,6 +21,14 @@ const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
           const populateQuery = getPopulateQuery(event.model.uid as UID.Schema);
           if (populateQuery?.populate) {
             event.params.populate = populateQuery.populate;
+          }
+
+          // Clean our tag from the custom query.
+          const query = event.params._q.replace(PLUGIN_QUERY_DOCUMENT_TAG, "");
+          if (query.length > 0) {
+            event.params._q = query;
+          } else {
+            delete event.params._q;
           }
         }
       }

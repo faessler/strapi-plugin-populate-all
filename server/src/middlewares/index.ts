@@ -1,4 +1,5 @@
 import type { Context, Next } from "koa";
+import { PLUGIN_QUERY_DOCUMENT_TAG } from "../config";
 
 export default {
   /**
@@ -8,9 +9,18 @@ export default {
    * The bootstrap script later picks up `?populateAll=true` to apply the desired populate logic.
    */
   populateAll: async (ctx: Context, next: Next) => {
+    // always bind the tag so we can load the execpected populate hook
+    // populateAll=true or ?populateAll (value can be 'true' or null)
+    if (
+      (ctx.query.populateAll && ctx.query.populateAll !== "false") ||
+      ctx.query.populateAll === null
+    ) {
+      ctx.query._q = [ctx.query._q || "", PLUGIN_QUERY_DOCUMENT_TAG].join("");
+    }
+
     if (ctx.query.populate === "all") {
       ctx.query.populate = undefined;
-      ctx.query.populateAll = true;
+      ctx.query._q = [ctx.query._q || "", PLUGIN_QUERY_DOCUMENT_TAG].join("");
     }
     await next();
   },
