@@ -25,9 +25,10 @@ export const getPopulateQuery = (
         `[populate-all] loop detected skipping population: ${modelUid}`
       );
       return { populate: {} };
-    } else {
-      parentsModelUids.push(modelUid);
     }
+
+    // copy parents uids to avoid mutating the original array during recursion
+    const nextParentsModelUids = [...parentsModelUids, modelUid];
 
     // build query
     const query = { populate: {} };
@@ -47,7 +48,7 @@ export const getPopulateQuery = (
         const components = Object.fromEntries(
           attribute.components.map((component) => [
             component,
-            getPopulateQuery(component, parentsModelUids),
+            getPopulateQuery(component, nextParentsModelUids),
           ])
         );
         query.populate[fieldName] = { on: components };
@@ -58,7 +59,7 @@ export const getPopulateQuery = (
       if (attribute.type === "component") {
         query.populate[fieldName] = getPopulateQuery(
           attribute.component,
-          parentsModelUids
+          nextParentsModelUids
         );
         continue;
       }
@@ -79,7 +80,7 @@ export const getPopulateQuery = (
           query.populate[fieldName] = getPopulateQuery(
             // @ts-expect-error target actually exists on attribute
             attribute.target,
-            parentsModelUids
+            nextParentsModelUids
           );
           continue;
         }
@@ -88,7 +89,7 @@ export const getPopulateQuery = (
           query.populate[fieldName] = getPopulateQuery(
             // @ts-expect-error target actually exists on attribute
             attribute.target,
-            parentsModelUids
+            nextParentsModelUids
           );
           continue;
         }
