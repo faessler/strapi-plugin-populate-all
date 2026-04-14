@@ -47,7 +47,7 @@ export const getPopulateQuery = (
         const components = Object.fromEntries(
           attribute.components.map((component) => [
             component,
-            getPopulateQuery(component, parentsModelUids),
+            getPopulateQuery(component, [...parentsModelUids]),
           ])
         );
         query.populate[fieldName] = { on: components };
@@ -58,7 +58,7 @@ export const getPopulateQuery = (
       if (attribute.type === "component") {
         query.populate[fieldName] = getPopulateQuery(
           attribute.component,
-          parentsModelUids
+          [...parentsModelUids]
         );
         continue;
       }
@@ -79,7 +79,7 @@ export const getPopulateQuery = (
           query.populate[fieldName] = getPopulateQuery(
             // @ts-expect-error target actually exists on attribute
             attribute.target,
-            parentsModelUids
+            [...parentsModelUids]
           );
           continue;
         }
@@ -88,7 +88,7 @@ export const getPopulateQuery = (
           query.populate[fieldName] = getPopulateQuery(
             // @ts-expect-error target actually exists on attribute
             attribute.target,
-            parentsModelUids
+            [...parentsModelUids]
           );
           continue;
         }
