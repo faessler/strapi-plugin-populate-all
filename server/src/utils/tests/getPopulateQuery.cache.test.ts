@@ -62,14 +62,9 @@ describe("getPopulateQuery: cache", () => {
     expect(queryCache).toEqual({});
   });
 
-  test("does not reuse a deep-recursion result into a later top-level query for the same model", () => {
-    // Schema:
-    //   outer → component `inner` → component `self` → relation `sibling` → relation back to `inner`
-    // When `outer` is walked first, the recursion reaches `inner` a second time
-    // as an ancestor, so `self` is legitimately short-circuited to { populate: {} }.
-    // If that result is cached under the bare key `inner`, a subsequent top-level
-    // walk of `inner` (e.g. `/api/inner?populate=all`) returns the shallow cached
-    // version even though `inner` is NOT an ancestor in the top-level call.
+  test("caches nested and top-level queries for the same model independently", () => {
+    // outer → inner → inner-body → back to inner (loop-detected, short-circuited)
+    // A top-level query on `inner` must not reuse the short-circuited nested result.
     mockStrapi.plugin.mockReturnValue({
       config: vi
         .fn()
@@ -105,14 +100,11 @@ describe("getPopulateQuery: cache", () => {
       }
     });
 
-    // deep `inner` is reached twice, second time as an ancestor,
-    // producing a legitimately shallow sub-tree for the inner occurrence
+    // walk outer first — caches a short-circuited version of `inner`
     getPopulateQuery("outer" as UID.Schema);
 
-    // top-level on `inner`, ust NOT reuse the deep result
+    // top-level query on `inner` must produce a full populate tree
     const topLevelInner = getPopulateQuery("inner" as UID.Schema);
-
-    // `self` and `sibling` must be populated since they are NOT ancestors here
     expect(topLevelInner).toEqual({
       populate: {
         self: {
@@ -142,7 +134,6 @@ describe("getPopulateQuery: cache", () => {
     });
 
     const result = getPopulateQuery("model" as UID.Schema);
-    // @ts-expect-error: simulating race condition where `queryCache` gets overwritten by other call
     queryCache.model.populate.media = false;
 
     expect(result).toEqual({

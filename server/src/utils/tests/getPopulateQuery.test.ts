@@ -94,14 +94,10 @@ describe("getPopulateQuery", () => {
     });
   });
 
-  test("does not falsely loop-detect across sibling subtrees", () => {
-    // Schema:
-    //   root has two component siblings A and B.
-    //   A's subtree references shared component C.
-    //   B's subtree also references shared component C.
-    // With the previous mutation-based parents stack, walking A would leave
-    // ['root', 'A', 'C'] on the stack; the subsequent walk into B would then
-    // see 'C' as an "ancestor" and short-circuit B.c to { populate: {} }.
+  test("populates a shared component used by siblings", () => {
+    // root → A → C and root → B → C
+    // C appears in both sibling subtrees but is never an ancestor,
+    // so it must be fully populated in both branches.
     mockStrapi.plugin.mockReturnValue({
       config: vi
         .fn()
@@ -139,7 +135,7 @@ describe("getPopulateQuery", () => {
 
     const result = getPopulateQuery("root" as UID.Schema);
 
-    // B.c must be populated the same way as A.c, not collapsed to {}.
+    // both branches must fully populate C
     expect(result).toEqual({
       populate: {
         a: { populate: { c: { populate: true } } },
@@ -148,7 +144,7 @@ describe("getPopulateQuery", () => {
     });
   });
 
-  test("does not mutate the parents array passed by the caller", () => {
+  test("preserves the caller's parents array", () => {
     mockStrapi.getModel.mockReturnValue({
       attributes: { foo: { type: "string" } },
     });
