@@ -1,8 +1,20 @@
 import type { UID } from "@strapi/strapi";
 
-// memory cache to only execute query generation ones per modelUid
+// memory cache to only execute query generation once per requested model path
 // biome-ignore lint/suspicious/noExplicitAny: any object can be cached
-export const queryCache: Partial<Record<UID.Schema, any>> = {};
+export const queryCache: Record<string, any> = {};
+
+// generate a unique cache key from the model uid and its parent model uids
+// returns "parent1|parent2|...|modelUid" or just "modelUid" if no parents
+const buildCacheKey = (
+  modelUid: UID.Schema,
+  parentsModelUids: UID.Schema[]
+): string => {
+  if (parentsModelUids.length === 0) {
+    return modelUid;
+  }
+  return `${parentsModelUids.join("|")}|${modelUid}`;
+};
 
 export const getPopulateQuery = (
   modelUid: UID.Schema,
@@ -13,10 +25,12 @@ export const getPopulateQuery = (
     const useCache =
       strapi.plugin("populate-all").config<boolean>("cache") ?? true;
 
+    const cacheKey = buildCacheKey(modelUid, parentsModelUids);
+
     // return cached query
-    if (useCache && queryCache[modelUid]) {
-      strapi.log.debug(`[populate-all] query cache hit: ${modelUid}`);
-      return structuredClone(queryCache[modelUid]); // return a clone to avoid mutating the original object
+    if (useCache && queryCache[cacheKey]) {
+      strapi.log.debug(`[populate-all] query cache hit: ${cacheKey}`);
+      return structuredClone(queryCache[cacheKey]); // return a clone to avoid mutating the original object
     }
 
     // prevent infinite loop
@@ -25,9 +39,10 @@ export const getPopulateQuery = (
         `[populate-all] loop detected skipping population: ${modelUid}`
       );
       return { populate: {} };
-    } else {
-      parentsModelUids.push(modelUid);
     }
+
+    // copy parents uids to avoid mutating the original array during recursion
+    const nextParentsModelUids = [...parentsModelUids, modelUid];
 
     // build query
     const query = { populate: {} };
@@ -47,7 +62,7 @@ export const getPopulateQuery = (
         const components = Object.fromEntries(
           attribute.components.map((component) => [
             component,
-            getPopulateQuery(component, parentsModelUids),
+            getPopulateQuery(component, nextParentsModelUids),
           ])
         );
         query.populate[fieldName] = { on: components };
@@ -58,7 +73,7 @@ export const getPopulateQuery = (
       if (attribute.type === "component") {
         query.populate[fieldName] = getPopulateQuery(
           attribute.component,
-          parentsModelUids
+          nextParentsModelUids
         );
         continue;
       }
@@ -79,7 +94,7 @@ export const getPopulateQuery = (
           query.populate[fieldName] = getPopulateQuery(
             // @ts-expect-error target actually exists on attribute
             attribute.target,
-            parentsModelUids
+            nextParentsModelUids
           );
           continue;
         }
@@ -88,7 +103,7 @@ export const getPopulateQuery = (
           query.populate[fieldName] = getPopulateQuery(
             // @ts-expect-error target actually exists on attribute
             attribute.target,
-            parentsModelUids
+            nextParentsModelUids
           );
           continue;
         }
@@ -107,8 +122,8 @@ export const getPopulateQuery = (
 
     // cache query
     if (useCache) {
-      strapi.log.debug(`[populate-all] new query cached: ${modelUid}`);
-      queryCache[modelUid] = query;
+      strapi.log.debug(`[populate-all] new query cached: ${cacheKey}`);
+      queryCache[cacheKey] = query;
     }
     return structuredClone(query); // return a clone to avoid mutating the original object
   } catch (error) {
