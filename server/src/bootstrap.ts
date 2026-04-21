@@ -7,7 +7,8 @@ const bootstrap = ({ strapi }: { strapi: Core.Strapi }) => {
     try {
       if (
         event.action === "beforeFindMany" ||
-        event.action === "beforeFindOne"
+        event.action === "beforeFindOne" ||
+        event.action === "beforeCount"
       ) {
         // There is a whitelist of keys we can use to detect our
         // filter from the params
