@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/sandbox"
+    schedule:
+      interval: "daily"
+    target-branch: "main"
+    allow:
+      - dependency-name: "@strapi/*"
+    groups:
+      strapi:
+        patterns:
+          - "@strapi/*"
+    commit-message:
+      prefix: "chore(dependabot)"
