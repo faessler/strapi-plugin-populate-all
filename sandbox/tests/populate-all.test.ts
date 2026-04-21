@@ -2,6 +2,15 @@ import { describe, expect, test } from "@jest/globals";
 import { strapiRequest } from "./strapi";
 
 describe("strapi-plugin-populate-all", () => {
+  test("if pagination reflects populated data", async () => {
+    const response = await strapiRequest.get(
+      "/api/articles?status=draft&populate=all"
+    );
+
+    expect(response.body.meta.pagination.total).toBe(response.body.data.length);
+    expect(response.body.meta.pagination.pageCount).toBeGreaterThanOrEqual(1);
+  });
+
   test("if everything is populated", async () => {
     const response = await strapiRequest.get(
       "/api/articles?status=draft&populate=all"
