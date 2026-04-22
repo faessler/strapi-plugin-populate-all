@@ -26,8 +26,8 @@
     "npm": ">=6.0.0"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "5.42.1",
-    "@strapi/plugin-users-permissions": "5.42.1",
+    "@strapi/plugin-cloud": "5.43.0",
+    "@strapi/plugin-users-permissions": "5.43.0",
     "@strapi/strapi": "5.37.1",
     "better-sqlite3": "^11.3.0",
     "fs-extra": "^10.0.0",
