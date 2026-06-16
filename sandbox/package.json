@@ -26,9 +26,9 @@
     "npm": ">=6.0.0"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "5.46.1",
-    "@strapi/plugin-users-permissions": "5.46.1",
-    "@strapi/strapi": "5.37.1",
+    "@strapi/plugin-cloud": "5.48.0",
+    "@strapi/plugin-users-permissions": "5.48.0",
+    "@strapi/strapi": "5.48.0",
     "better-sqlite3": "^11.3.0",
     "fs-extra": "^10.0.0",
     "mime-types": "^2.1.27",
