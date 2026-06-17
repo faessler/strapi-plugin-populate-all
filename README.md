@@ -27,10 +27,11 @@ This will return the article with all nested components, dynamic zones and relat
 
 The following configuration options can be added to your Strapi project's `config/plugins.js` or `config/plugins.ts` file.
 
-| Option      | Description                                                                            | Values                                                                                                                                                                                                |
-| ----------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `relations` | Controls which relations are populated when querying.                                  | - `true`: Populate all relations recursively (default)<br>- `false`: Do not populate any relations<br>- `string[]`: Populate only specific collection types by UID (e.g., `["api::article.article"]`) |
-| `cache`     | Enables or disables the plugin’s in-memory cache for faster populate query generation. | - `true` (default)<br>- `false`                                                                                                                                                                       |
+| Option      | Description                                                                                                                                                                                                                                                              | Values                                                                                                                                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `relations` | Controls which relations are populated when querying.                                                                                                                                                                                                                    | - `true`: Populate all relations recursively (default)<br>- `false`: Do not populate any relations<br>- `string[]`: Populate only specific collection types by UID (e.g., `["api::article.article"]`) |
+| `cache`     | Enables or disables the plugin’s in-memory cache for faster populate query generation.                                                                                                                                                                                   | - `true` (default)<br>- `false`                                                                                                                                                                       |
+| `recursion` | Allows a model to populate itself N levels deep when the populate tree revisits the same `modelUid`. By default, self-references are skipped after the first encounter to prevent infinite loops. Use this to opt specific models in to deeper nested self-populations.  | An object mapping `modelUid` to a non-negative integer depth, e.g. `{ "api::article.article": 2 }`. `0` (default) means no self-recursion; `1` allows one nested level; `2` allows two; and so on.    |
 
 Example usage:
 
@@ -41,6 +42,10 @@ module.exports = {
     config: {
       cache: true,
       relations: true,
+      recursion: {
+        // articles can populate their `related` articles 2 levels deep
+        "api::article.article": 2,
+      },
     },
   },
 };

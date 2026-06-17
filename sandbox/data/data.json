@@ -71,6 +71,7 @@
       "author": {
         "id": 1
       },
+      "related": [{ "id": 2 }, { "id": 3 }, { "id": 4 }],
       "description": "Follow the story of Aaron Swartz, the boy who could change the world",
       "cover": null,
       "blocks": [
@@ -106,6 +107,7 @@
       "author": {
         "id": 1
       },
+      "related": [{ "id": 1 }, { "id": 3 }, { "id": 5 }],
       "description": "Mantis shrimps, or stomatopods, are marine crustaceans of the order Stomatopoda.",
       "cover": null,
       "blocks": [
@@ -141,6 +143,7 @@
       "author": {
         "id": 2
       },
+      "related": [{ "id": 1 }, { "id": 2 }, { "id": 5 }],
       "description": "How a bug on MySQL is becoming a meme on the internet",
       "cover": null,
       "blocks": [
@@ -176,6 +179,7 @@
       "author": {
         "id": 2
       },
+      "related": [{ "id": 1 }, { "id": 3 }, { "id": 5 }],
       "description": "Description of a beautiful picture",
       "cover": null,
       "blocks": [
@@ -211,6 +215,7 @@
       "author": {
         "id": 2
       },
+      "related": [{ "id": 2 }, { "id": 3 }, { "id": 4 }],
       "description": "Maybe the answer is in this article, or not...",
       "cover": null,
       "blocks": [

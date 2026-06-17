@@ -49,6 +49,11 @@
         "shared.rich-text",
         "shared.slider"
       ]
+    },
+    "related": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::article.article"
     }
   }
 }

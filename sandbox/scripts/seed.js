@@ -175,19 +175,41 @@ async function updateBlocks(blocks) {
 }
 
 async function importArticles() {
+  // first pass: create articles without `related` so we can resolve forward references afterwards
   for (const article of articles) {
     const cover = await checkFileExistsBeforeUpload([`${article.slug}.jpg`]);
     const updatedBlocks = await updateBlocks(article.blocks);
+    const { related, ...articleData } = article;
 
     await createEntry({
       model: "article",
       entry: {
-        ...article,
+        ...articleData,
         cover,
         blocks: updatedBlocks,
         // Make sure it's not a draft
         publishedAt: Date.now(),
       },
+    });
+  }
+
+  // second pass: link `related` by slug now that every article exists
+  const allArticles = await strapi.documents("api::article.article").findMany();
+  const documentIdBySlug = Object.fromEntries(
+    allArticles.map((a) => [a.slug, a.documentId])
+  );
+
+  for (const article of articles) {
+    if (!article.related?.length) continue;
+    const documentId = documentIdBySlug[article.slug];
+    if (!documentId) continue;
+    const relatedDocumentIds = article.related
+      .map((r) => documentIdBySlug[articles[r.id - 1]?.slug])
+      .filter(Boolean);
+
+    await strapi.documents("api::article.article").update({
+      documentId,
+      data: { related: relatedDocumentIds },
     });
   }
 }
