@@ -33,8 +33,18 @@ export const getPopulateQuery = (
       return structuredClone(queryCache[cacheKey]); // return a clone to avoid mutating the original object
     }
 
-    // prevent infinite loop
-    if (parentsModelUids.includes(modelUid)) {
+    // allow N-level deep self-recursion per modelUid via the `recursion` config
+    // e.g. { "api::article.article": 2 } lets articles nest into articles up to 2 levels deep
+    const recursionDepth =
+      strapi
+        .plugin("populate-all")
+        .config<Record<string, number>>("recursion")?.[modelUid] ?? 0;
+    const occurrences = parentsModelUids.filter(
+      (uid) => uid === modelUid
+    ).length;
+
+    // prevent infinite loop once the configured depth is exceeded
+    if (occurrences > recursionDepth) {
       strapi.log.debug(
         `[populate-all] loop detected skipping population: ${modelUid}`
       );
