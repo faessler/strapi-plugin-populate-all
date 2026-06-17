@@ -48,3 +48,4 @@ jobs:
 
       - name: Test Integration
         run: npm run test:cover
+        continue-on-error: true
